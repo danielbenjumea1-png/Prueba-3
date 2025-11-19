@@ -14,7 +14,7 @@ import os
 COLOR_VERDE = PatternFill(start_color="00FF00", end_color="00FF00", fill_type="solid")
 COLOR_MORADO = PatternFill(start_color="800080", end_color="800080", fill_type="solid")
 
-st.title("📚 Inventario Biblioteca con IA OCR (Optimizado)")
+st.title("📚 Inventario Biblioteca UCC - Sede Medellín")
 st.write("La aplicación detecta códigos automáticamente y actualiza el Excel sin necesidad de presionar botones.")
 
 # ================================
