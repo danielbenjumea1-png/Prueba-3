@@ -8,18 +8,12 @@ from PIL import Image
 import re
 import os
 
-# ================================
-# CONFIGURACIÓN DE COLORES
-# ================================
 COLOR_VERDE = PatternFill(start_color="00FF00", end_color="00FF00", fill_type="solid")
 COLOR_MORADO = PatternFill(start_color="800080", end_color="800080", fill_type="solid")
 
 st.title("📚 Inventario Biblioteca UCC - Sede Medellín")
 st.write("La aplicación detecta códigos automáticamente y actualiza el Excel sin necesidad de presionar botones.")
 
-# ================================
-# CARGAR O CREAR EXCEL PERMANENTE
-# ================================
 EXCEL_PATH = "inventario.xlsx"
 
 if not os.path.exists(EXCEL_PATH):
@@ -31,12 +25,10 @@ if not os.path.exists(EXCEL_PATH):
         st.success("Inventario cargado exitosamente. Recarga la página para comenzar.")
     st.stop()
 
-# Cargar Excel ya existente
 wb = load_workbook(EXCEL_PATH)
 sheet = wb.active
 df = pd.read_excel(EXCEL_PATH)
 
-# Detectar columna de códigos
 codigo_columna = None
 for col in df.columns:
     if "codigo" in col.lower():
@@ -49,26 +41,17 @@ if not codigo_columna:
 
 codigo_a_fila = {str(row[codigo_columna]).strip(): idx + 2 for idx, row in df.iterrows()}
 
-# ================================
-# OCR — CARGA ÚNICA (acelera muchísimo)
-# ================================
 @st.cache_resource
 def cargar_ocr():
     return easyocr.Reader(['es', 'en'])
 
 reader = cargar_ocr()
 
-# ================================
-# ESCANEO CON CÁMARA
-# ================================
 st.subheader("Escanea el código")
 img_file = st.camera_input("Toma una foto del código")
 
 codigo_detectado = None
 
-# ================================
-# PROCESAR IMAGEN CON OCR
-# ================================
 if img_file:
     img = Image.open(img_file)
     img_array = np.array(img)
@@ -90,11 +73,9 @@ if img_file:
     for t in textos:
         t_limpio = t.lower().replace(" ", "").replace("-", "").strip()
 
-        # Ignorar frases institucionales
         if any(frase in t_limpio for frase in frases_prohibidas):
             continue
 
-        # Código tipo B0092744
         if re.fullmatch(r"b\d{6,8}", t_limpio):
             posibles_codigos.append(t_limpio.upper())
             continue
@@ -106,9 +87,6 @@ if img_file:
         codigo_detectado = max(posibles_codigos, key=len)
         st.success(f"Código detectado: **{codigo_detectado}**")
 
-        # ================================
-        # ACTUALIZAR INVENTARIO AUTOMÁTICAMENTE
-        # ================================
         if codigo_detectado in codigo_a_fila:
             fila = codigo_a_fila[codigo_detectado]
             celda = f"A{fila}"
@@ -127,9 +105,6 @@ if img_file:
     else:
         st.warning("No se encontró un código válido en la imagen.")
 
-# ================================
-# MOSTRAR INVENTARIO
-# ================================
 st.subheader("Inventario actualizado")
 st.dataframe(pd.read_excel(EXCEL_PATH))
 
