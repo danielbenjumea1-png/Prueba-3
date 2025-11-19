@@ -104,7 +104,30 @@ if img_file:
 
     else:
         st.warning("No se encontró un código válido en la imagen.")
+        
+st.subheader("Ingresar código manualmente")
 
+codigo_manual = st.text_input("Escribe el código si no puedes escanearlo:")
+
+if codigo_manual:
+    codigo_manual = codigo_manual.strip().upper()
+
+    if codigo_manual in codigo_a_fila:
+        fila = codigo_a_fila[codigo_manual]
+        celda = f"A{fila}"
+        sheet[celda].fill = COLOR_VERDE
+        sheet[celda].font = Font(bold=True)
+        st.success(f"✔ Código {codigo_manual} encontrado y marcado en verde.")
+
+    else:
+        nueva_fila = sheet.max_row + 1
+        sheet[f"A{nueva_fila}"] = codigo_manual
+        sheet[f"A{nueva_fila}"].fill = COLOR_MORADO
+        sheet[f"A{nueva_fila}"].font = Font(bold=True)
+        st.warning(f"➕ Código nuevo agregado manualmente: {codigo_manual}")
+
+    wb.save(EXCEL_PATH)
+    
 st.subheader("Inventario actualizado")
 st.dataframe(pd.read_excel(EXCEL_PATH))
 
