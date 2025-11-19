@@ -23,7 +23,7 @@ uploaded_file = st.file_uploader("Sube tu archivo Excel del inventario", type=["
 if uploaded_file:
     excel_path = "inventario.xlsx"
     with open(excel_path, "wb") as f:
-        f.write(uploadload_file.getbuffer())
+        f.write(uploaded_file.getbuffer())
 
     wb = load_workbook(excel_path)
     sheet = wb.active
