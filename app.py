@@ -135,7 +135,6 @@ with open(EXCEL_PATH, "rb") as f:
     st.download_button("Descargar inventario actualizado", f, file_name="inventario_actualizado.xlsx")
     
 # Simulador de actividad periódica para evitar suspensión y que no se reinicie y se pierda el inventario
-st_autorefresh = st.experimental_rerun  # Para compatibilidad futura
 from streamlit_autorefresh import st_autorefresh
-
+    
 count = st_autorefresh(interval=600000, limit=None, key="keep_alive")
