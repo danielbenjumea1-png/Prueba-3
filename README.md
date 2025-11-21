@@ -1,13 +1,1 @@
-Inventario Biblioteca con Streamlit
-Esta aplicación permite escanear códigos de barras usando la cámara del celular y actualizar un archivo Excel en tiempo real.
-
-Funcionalidades
-Marca en verde los códigos existentes.
-Agrega nuevos códigos y los marca en morado.
-Permite descargar el Excel actualizado.
-Cómo desplegar
-Subir este proyecto a GitHub.
-Ir a Streamlit Cloud.
-Crear una nueva app y seleccionar este repositorio.
-Elegir app.py como archivo principal.
-¡Listo! Accede a la URL pública desde tu celular.
+📚 Inventario Biblioteca UCC - Sede Medellín Una aplicación web construida con Streamlit para gestionar el inventario de la biblioteca UCC en Medellín. Utiliza OCR (Reconocimiento Óptico de Caracteres) para escanear códigos de libros automáticamente, actualiza un archivo Excel en tiempo real y permite entradas manuales. Incluye características como búsqueda y backups automáticos.
